@@ -1,0 +1,8 @@
+[package]
+name = "pxpx"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ffmpeg-next = "7.0.2"
+lance = "0.11.1"
