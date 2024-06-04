@@ -27,6 +27,29 @@ where
             decoder.height(),
             Flags::BILINEAR,
         )?;
+
+        // initialize a lance tensor
+
+        let mut receive_and_process_decoded_frames = |decoder: &mut ffmpeg::decoder::Video| -> Result<(), ffmpeg::Error>{
+            let mut decoded = Video::empty();
+            while decoder.receive_frame(&mut decoded).is_ok() {
+                let mut scaled = Video::empty();
+                scaler.run(&decoded, &mut scaled)?;
+                // append to lance tensor
+            }
+
+            Ok(())
+        };
+
+        for (stream, packet) in ictx.packets() {
+            if stream.index() == video_stream_index {
+                decoder.send_packet(&packet)?;
+                receive_and_process_decoded_frames(&mut decoder)?;
+            }
+        }
+
+        decoder.send_eof()?;
+        receive_and_process_decoded_frames(&mut decoder)?;
     }
 
     Ok(())

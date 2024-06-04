@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 ffmpeg-next = "7.0.2"
 lance = "0.11.1"
+arrow-schema = "51.0.0"
